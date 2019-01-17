@@ -1,38 +1,36 @@
-let messages = [];
-let id = 0;
+let messagesArray = [];
+let messageID = 0;
 
 module.exports = {
-    create: ( req, res ) => {
-        const { text, time } = req.body;
-        messages.push({ id, text, time });
-        id++;
-        res.status(200).send( messages );
-      },
-    
-      read: ( req, res ) => {
-        res.status(200).send( messages );
-      },
-    
-      update: ( req, res ) => {
-        const { text } = req.body;
-        const updateID = req.params.id;
-        const messageIndex = messages.findIndex( message => message.id == updateID );
-        let message = messages[ messageIndex ];
-    
-        messages[ messageIndex ] = {
-          id: message.id,
-          text: text || message.text,
-          time: message.time
-        };
-    
-        res.status(200).send( messages );
-      },
-    
-      delete: ( req, res ) => {
-        const deleteID = req.params.id;    
-        messageIndex = messages.findIndex( message => message.id == deleteID );
-        messages.splice(messageIndex, 1);
-        res.status(200).send( messages );
-      }
+    create: function(req,res){
+        const { text, time } = req.body
+        messagesArray.push( { id: messageID,text: text ,time: time } )
+        res.status(200).send(messagesArray)
+    },
+    read: function(req,res){
+        res.status(200).send(messagesArray);
+    },
+    update: function(req,res){
+        const {text: textMess} = req.body
+        const updateID = parseInt(req.params.id);
+        console.log(textMess)
+        const messageID = messagesArray.findIndex((element) => {
+            return element.id === updateID
+        })
+        messagesArray[messageID].text = textMess || messagesArray[messageID].text;
+        res.status(200).send(messagesArray);
+    },
+
+    delete: function(req,res){
+        const deleteID = req.params.messageID;
+        const messageID = messagesArray.findIndex((element) => {
+            return element.messageID === deleteID
+        })
+
+        messagesArray.splice(messageID,1);
+        res.status(200).send(messagesArray);
+    }
 
 }
+
+
